@@ -1,0 +1,8 @@
+/* APP TITLE STYLES */
+#app-title {
+    text-align: center;
+    width: 100%;
+    font-family: sans-serif;
+    color: red;
+    margin: 20px auto;
+}
