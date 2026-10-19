@@ -1,70 +1,92 @@
-// VARIABLE: Tracks which box is currently active (starts at 0 for the first box)
-let currentBoxIndex = 0;
 
-// Get all letter boxes and keypad buttons from HTML
-let letterBoxes = document.querySelectorAll(".letter-box");
-let keys = document.querySelectorAll(".key");
-
-// FUNCTION: Adds a click event listener to every keypad button
-keys.forEach(function(key) {
-  key.addEventListener("click", function() {
-    // Check if we still have empty boxes in the current row
-    if (currentBoxIndex < letterBoxes.length) {
-      // Put the key's letter into the active box
-      letterBoxes[currentBoxIndex].textContent = key.textContent;
-      
-      // Move to the next box index
-      currentBoxIndex = currentBoxIndex + 1;
-    }
-  });
-});
-// SECRET WORD
+// SECRET WORD & CLUE
 let secretWord = "PARIS";
+let clue = "Hint: Capital of France, home to the Eiffel Tower!";
 
-// VARIABLE: Tracks which box is active
+// TRACKING VARIABLES
+let currentRowIndex = 0;
 let currentBoxIndex = 0;
 
-// Get elements from HTML
-let letterBoxes = document.querySelectorAll(".letter-box");
+// GET HTML ELEMENTS
+let rows = document.querySelectorAll(".guess-row");
 let keys = document.querySelectorAll(".key");
 let messageElement = document.getElementById("message");
+let helpButton = document.getElementById("help-btn");
+let skipButton = document.getElementById("skip-btn");
+let clueElement = document.getElementById("clue-text");
 
-// FUNCTION: Keypad click listener
+// HELP BUTTON LISTENER
+helpButton.addEventListener("click", function() {
+  clueElement.textContent = clue;
+});
+
+// KEYPAD BUTTON LISTENERS
 keys.forEach(function(key) {
   key.addEventListener("click", function() {
-    if (currentBoxIndex < letterBoxes.length) {
-      letterBoxes[currentBoxIndex].textContent = key.textContent;
+    // Select boxes only inside the current active row
+    let activeBoxes = rows[currentRowIndex].querySelectorAll(".letter-box");
+
+    if (currentBoxIndex < activeBoxes.length) {
+      activeBoxes[currentBoxIndex].textContent = key.textContent;
       currentBoxIndex = currentBoxIndex + 1;
 
-      // WHEN ALL 5 BOXES ARE FILLED: Check the guess!
-      if (currentBoxIndex === letterBoxes.length) {
-        checkGuess();
+      // When the active row is fully filled, check the guess!
+      if (currentBoxIndex === activeBoxes.length) {
+        checkRowGuess(activeBoxes);
       }
     }
   });
 });
 
-// FUNCTION: Checks if the user's guess matches the secret word
-function checkGuess() {
-  // Collect the typed letters into one word
+// FUNCTION: Checks the guess for the active row
+function checkRowGuess(activeBoxes) {
   let userGuess = "";
-  letterBoxes.forEach(function(box) {
+  activeBoxes.forEach(function(box) {
     userGuess = userGuess + box.textContent;
   });
 
-  // CONDITION: Check if guess matches secret word
   if (userGuess === secretWord) {
     messageElement.textContent = "CORRECT! YOU WIN! 🎉";
     messageElement.style.color = "#2ecc71";
-    letterBoxes.forEach(function(box) {
+    activeBoxes.forEach(function(box) {
       box.classList.add("correct");
     });
   } else {
-    messageElement.textContent = "INCORRECT! TRY AGAIN! ❌";
-    messageElement.style.color = "#e74c3c";
-    letterBoxes.forEach(function(box) {
+    activeBoxes.forEach(function(box) {
       box.classList.add("incorrect");
     });
+
+    // Move to the next row if available
+    if (currentRowIndex < rows.length - 1) {
+      currentRowIndex = currentRowIndex + 1;
+      currentBoxIndex = 0;
+      messageElement.textContent = "TRY AGAIN IN ROW " + (currentRowIndex + 1) + "! ❌";
+      messageElement.style.color = "#e74c3c";
+    } else {
+      messageElement.textContent = "GAME OVER! Secret word was: " + secretWord;
+      messageElement.style.color = "#e74c3c";
+    }
   }
 }
- 
+
+// SKIP BUTTON LISTENER
+skipButton.addEventListener("click", function() {
+  if (currentRowIndex < rows.length) {
+    let activeBoxes = rows[currentRowIndex].querySelectorAll(".letter-box");
+
+    activeBoxes.forEach(function(box, index) {
+      box.textContent = secretWord[index];
+      box.classList.add("incorrect");
+    });
+
+    if (currentRowIndex < rows.length - 1) {
+      currentRowIndex = currentRowIndex + 1;
+      currentBoxIndex = 0;
+      messageElement.textContent = "SKIPPED! Moved to row " + (currentRowIndex + 1);
+      messageElement.style.color = "#e67e22";
+    } else {
+      messageElement.textContent = "SKIPPED! Secret word was: " + secretWord;
+      messageElement.style.color = "#e67e22";
+    }
+  }
+});

@@ -1,7 +1,4 @@
-<!-- APP TITLE & THEME -->
 
-
-<!DOCTYPE html>
 <html>
 <head>
   <title>WORD GO!</title>
@@ -9,23 +6,55 @@
 </head>
 <body>
 
+  <!-- TOP CONTROLS -->
+  <div id="top-bar">
+    <button id="help-btn">Help</button>
+    <button id="skip-btn">Skip (-5 pts)</button>
+  </div>
+
   <!-- APP TITLE -->
   <h1 id="app-title">WORD GO!</h1>
 
-  <!-- THEME -->
+  <!-- THEME & CLUE -->
   <p id="theme-heading">Theme: Famous Landmarks</p>
+  <p id="clue-text"></p>
 
-</body>
-</html>
-<!-- GUESS BOXES (ROW 1) -->
-  <div id="word-container">
-    <div class="letter-box"></div>
-    <div class="letter-box"></div>
-    <div class="letter-box"></div>
-    <div class="letter-box"></div>
-    <div class="letter-box"></div>
+  <!-- GUESS BOXES (4 ROWS) -->
+  <div id="board">
+    <div class="guess-row active-row">
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+    </div>
+    <div class="guess-row">
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+    </div>
+    <div class="guess-row">
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+    </div>
+    <div class="guess-row">
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+      <div class="letter-box"></div>
+    </div>
   </div>
-  <!-- ON-SCREEN KEYPAD (FEATURE 3) -->
+
+  <!-- MESSAGE FEEDBACK AREA -->
+  <p id="message"></p>
+
+  <!-- ON-SCREEN KEYPAD -->
   <div id="keypad">
     <button class="key">P</button>
     <button class="key">A</button>
@@ -33,5 +62,8 @@
     <button class="key">I</button>
     <button class="key">S</button>
   </div>
-  <!-- MESSAGE FEEDBACK AREA -->
-  <p id="message"></p>
+
+  <!-- SCRIPT CONNECTION -->
+  <script src="script.js"></script>
+</body>
+</html>
