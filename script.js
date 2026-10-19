@@ -68,7 +68,6 @@ function checkRowGuess(activeBoxes) {
     }
   }
 }
-
 // SKIP BUTTON LISTENER
 skipButton.addEventListener("click", function() {
   if (currentRowIndex < rows.length) {
@@ -90,3 +89,4 @@ skipButton.addEventListener("click", function() {
     }
   }
 });
+
